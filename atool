@@ -1,0 +1,3 @@
+base=/data/local/tmp
+export CLASSPATH=$base/atool.jar
+exec app_process $base com.dhoon.atool.Atool "$@"
