@@ -21,6 +21,10 @@ public final class Atool extends BaseCommand {
                 "usage: atool pm [subcommand] [options]\n");
     }
 
+    private String[] getRawArgs() {
+        return mArgs;
+    }
+
     @Override
     public void onRun() throws Exception {
         String[] rawArgs = getRawArgs();

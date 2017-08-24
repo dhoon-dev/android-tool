@@ -2,7 +2,7 @@
 
 base=/data/local/tmp
 
-adb push atool atool.jar $base > /dev/null
+adb push atool $base > /dev/null
+adb push atool.jar $base > /dev/null
 
-shift
 adb shell $base/atool "$@"

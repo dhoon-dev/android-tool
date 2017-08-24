@@ -2,8 +2,6 @@ package com.dhoon.atool.pm;
 
 import static android.content.pm.PackageManager.INSTALL_FAILED_INVALID_URI;
 import static android.content.pm.PackageManager.INSTALL_FAILED_USER_RESTRICTED;
-import static android.content.pm.PackageManager.INSTALL_FULL_APP;
-import static android.content.pm.PackageManager.INSTALL_REASON_USER;
 import static android.content.pm.PackageManager.INSTALL_SUCCEEDED;
 
 import android.content.pm.IPackageManager;
@@ -38,7 +36,7 @@ public final class Pm extends BaseCommand {
     }
 
     private IPackageManager mIpm;
-    private int mUserId = UserHandle.USER_SYSTEM;
+    private int mUserId = UserHandle.USER_OWNER;
 
     @Override
     public void onShowUsage(PrintStream out) {
@@ -68,7 +66,15 @@ public final class Pm extends BaseCommand {
 
     private boolean parseUserArg(String opt) {
         if ("--user".equals(opt)) {
-            mUserId = UserHandle.parseUserArg(nextArgRequired());
+            // Copy from android-8.0.0_r1
+            String arg = nextArgRequired();
+            if ("all".equals(arg)) {
+                mUserId = UserHandle.USER_ALL;
+            } else if ("current".equals(arg) || "cur".equals(arg)) {
+                mUserId = UserHandle.USER_CURRENT;
+            } else {
+                mUserId = Integer.parseInt(arg);
+            }
             return true;
         }
         return false;
@@ -85,8 +91,7 @@ public final class Pm extends BaseCommand {
         String packageName = nextArgRequired();
         do {
             // doesn't support installFlags and installReason yet
-            switch (mIpm.installExistingPackageAsUser(
-                        packageName, mUserId, INSTALL_FULL_APP, INSTALL_REASON_USER)) {
+            switch (mIpm.installExistingPackageAsUser(packageName, mUserId)) {
                 case INSTALL_SUCCEEDED:
                     System.out.println("Success: " + packageName);
                     break;
