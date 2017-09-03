@@ -19,7 +19,7 @@ public final class Atool extends BaseCommand {
     @Override
     public void run(String[] args) {
         mRawArgs = args;
-        run(args);
+        super.run(args);
     }
 
     @Override
