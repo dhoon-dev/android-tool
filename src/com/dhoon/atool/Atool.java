@@ -14,6 +14,14 @@ public final class Atool extends BaseCommand {
         (new Atool()).run(args);
     }
 
+    private String[] mRawArgs;
+
+    @Override
+    public void run(String[] args) {
+        mRawArgs = args;
+        run(args);
+    }
+
     @Override
     public void onShowUsage(PrintStream out) {
         out.println(
@@ -22,7 +30,7 @@ public final class Atool extends BaseCommand {
     }
 
     private String[] getRawArgs() {
-        return mArgs;
+        return mRawArgs;
     }
 
     @Override
